@@ -1,7 +1,5 @@
 # m2-monRSA
 
-Développeur : Cedric Kadima
-
 # monRSA
 
 `monRSA` est un outil de chiffrement RSA en ligne de commande. Il permet de générer des paires de clés, de chiffrer des messages avec une clé publique et de déchiffrer des messages avec une clé privée.
@@ -78,6 +76,4 @@ python monRSA.py encrypt monRSA.pub "Votre message ici" -o message_chiffre.txt
 ```
 
 ## Notes
-
-- Assurez-vous que les fichiers de clés sont correctement protégés et ne sont pas accessibles par des utilisateurs non autorisés.
-- L'outil est destiné à des fins éducatives et de démonstration et ne doit pas être utilisé pour le chiffrement de données sensibles ou sécurisées.
+Développeur : Cedric Kadima
