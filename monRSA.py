@@ -2,6 +2,7 @@ import random
 from math import gcd
 import base64
 import sys
+import argparse
 
 
 
@@ -82,7 +83,7 @@ def find_e_d(phi):
                 return e, d
         e += 2
 
-def keygen():
+def keygen(filename='monRSA', size=10):
     p = generate_prime()
     q = generate_prime()
     while p == q:
@@ -92,12 +93,12 @@ def keygen():
     e, d = find_e_d(phi)
 
     # Sauvegarder les clés dans des fichiers
-    with open("monRSA.priv", "w") as priv_file:
+    with open(f"{filename}.priv", "w") as priv_file:
         priv_key = (f"---begin monRSA private key---\n{base64.b64encode(f'{n}:{d}'.encode()).decode()}\n---end monRSA "
                     f"key---")
         priv_file.write(priv_key)
 
-    with open("monRSA.pub", "w") as pub_file:
+    with open(f"{filename}.pub", "w") as pub_file:
         pub_key = (f"---begin monRSA public key---\n{base64.b64encode(f'{n}:{e}'.encode()).decode()}\n---end monRSA "
                    f"key---")
         pub_file.write(pub_key)
@@ -149,6 +150,38 @@ def decrypt(encrypted_message, private_key_filename="monRSA.priv"):
     return decrypted_message
 
 ''' Étape 4: Interface en ligne de commande '''
+def main():
+    parser = argparse.ArgumentParser(description='monRSA: Un outil de chiffrement RSA en ligne de commande.')
+
+    parser.add_argument('command', choices=['keygen', 'encrypt', 'decrypt'], help='La commande à exécuter.')
+    parser.add_argument('keyfile', nargs='?', help='Le fichier contenant la clé RSA.')
+    parser.add_argument('message', nargs='?', help='Le message à chiffrer ou déchiffrer.')
+
+    parser.add_argument('-f', '--filename', default='monRSA', help='Le nom de base des fichiers de clé générés.')
+    parser.add_argument('-s', '--size', type=int, default=10, help='La taille de la clé à générer.')
+    parser.add_argument('-i', '--input', action='store_true', help='Lire le message depuis un fichier.')
+    parser.add_argument('-o', '--output', help='Le nom du fichier où sauvegarder le message chiffré/déchiffré.')
+
+    args = parser.parse_args()
+
+    if args.command == 'keygen':
+        # Générez les clés ici avec args.filename et args.size
+        pass
+    elif args.command in ['encrypt', 'decrypt']:
+        if args.input:
+            with open(args.message, 'r') as file:
+                args.message = file.read()
+
+        # Exécutez la commande de chiffrement ou de déchiffrement ici
+
+        output_message = "Votre message chiffré/déchiffré ici"
+
+        if args.output:
+            with open(args.output, 'w') as file:
+                file.write(output_message)
+        else:
+            print(output_message)
+
 if __name__ == "__main__":
     command = sys.argv[1].lower()
     if command == "keygen":
